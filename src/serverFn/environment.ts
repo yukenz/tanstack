@@ -3,12 +3,11 @@ import {createServerFn} from "@tanstack/react-start";
 const getEnviVarFn = createServerFn({
     method: 'GET',
 })
-    .validator((arg1: string) => arg1)
-    .handler(({data: arg1}) => process.env[arg1])
+    .validator((data: string) => data)
+    .handler(({data}) => process.env[data])
 
-
-async function getEnviVar(arg1: string) {
-    return await getEnviVarFn({data: arg1})
+async function getEnviVar(enviVarKey: string) {
+    return await getEnviVarFn({data: enviVarKey})
 }
 
 export {getEnviVar}
