@@ -1,7 +1,10 @@
+import {undefined} from "zod";
+
 export interface CounterState {
     value: number,
     nested: {
-        value: number
+        value: number,
+        jwt: string | null
     }
 
 }
@@ -9,6 +12,7 @@ export interface CounterState {
 export const initialState: CounterState = {
     value: 0,
     nested: {
-        value: 100
+        value: 100,
+        jwt: null
     }
 }

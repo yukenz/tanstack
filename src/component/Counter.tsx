@@ -1,6 +1,6 @@
 import React, {JSX, MouseEventHandler} from 'react'
 import {useStoreDispatch} from "@/state/store";
-import {increment, decrement, useCounterSelector, incrementAsync} from "@/state/counter/counterSlice";
+import {increment, decrement, useCounterSelector, incrementAsync, getJwtAsync} from "@/state/counter/counterSlice";
 
 type Element = JSX.Element
 
@@ -13,13 +13,12 @@ export default function ({
                          }: CounterProps): Element {
 
 
-    const {value} = useCounterSelector();
+    const counterState = useCounterSelector();
     const dispatch = useStoreDispatch();
-
 
     return (
         <>
-            <p>{value}</p>
+            <p>{counterState.nested.jwt}</p>
             <div>
                 <button
                     onClick={() => dispatch(increment())}
@@ -37,6 +36,13 @@ export default function ({
                     onClick={() => dispatch(incrementAsync(10))}
                 >
                     Increment Async
+                </button>
+                <br/>
+
+                <button
+                    onClick={() => dispatch(getJwtAsync())}
+                >
+                    Get JWT
                 </button>
                 <br/>
 

@@ -3,6 +3,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "@/state/store";
 import {CounterState, initialState} from "./counterState";
 import {WritableDraft} from "immer";
+import {getJwtToken, JwtResponse} from "@/utils/apigateway";
 
 
 const name = 'counter';
@@ -35,6 +36,13 @@ const incrementAsync = createAsyncThunk(
     }
 );
 
+const getJwtAsync = createAsyncThunk(
+    name + '/getJwt',
+    async (): Promise<JwtResponse> => {
+        return getJwtToken(process.env.APIKEY as string, process.env.APPID)
+    }
+);
+
 const counterSlice = createSlice({
     name,
     initialState,
@@ -54,6 +62,16 @@ const counterSlice = createSlice({
                 function (state, {type, payload}: PayloadAction<number>) {
                     state.value += payload;
                 }
+            )
+            //getJwtAsync
+            .addCase(
+                getJwtAsync.fulfilled,
+                function (state, {type, payload}: PayloadAction<JwtResponse>) {
+                    console.log(payload);
+                    if (payload.accessToken) {
+                        state.nested.jwt = payload.accessToken;
+                    }
+                }
             );
     }
 });
@@ -61,7 +79,8 @@ const counterSlice = createSlice({
 
 // For Component
 export {
-    incrementAsync
+    incrementAsync,
+    getJwtAsync
 }
 
 export const {
