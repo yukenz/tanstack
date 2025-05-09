@@ -1,11 +1,11 @@
-import React, {JSX, MouseEventHandler} from 'react'
+import React, {JSX, MouseEventHandler, useCallback, useEffect} from 'react'
 import {useStoreDispatch} from "@/state/store";
 import {increment, decrement, useCounterSelector, incrementAsync, getJwtAsync} from "@/state/counter/counterSlice";
 
 type Element = JSX.Element
 
 interface CounterProps {
-    children: React.ReactNode
+    children: React.ReactNode,
 }
 
 export default function ({

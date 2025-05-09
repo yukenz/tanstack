@@ -4,6 +4,7 @@ import {RootState} from "@/state/store";
 import {CounterState, initialState} from "./counterState";
 import {WritableDraft} from "immer";
 import {getJwtToken, JwtResponse} from "@/utils/apigateway";
+import {getEnviVar} from "@/serverFn/environment";
 
 
 const name = 'counter';
@@ -39,7 +40,11 @@ const incrementAsync = createAsyncThunk(
 const getJwtAsync = createAsyncThunk(
     name + '/getJwt',
     async (): Promise<JwtResponse> => {
-        return getJwtToken(process.env.APIKEY as string, process.env.APPID)
+
+        const apiKey = await getEnviVar("APIKEY");
+        const appId = await getEnviVar("APPID");
+
+        return getJwtToken(apiKey!, appId)
     }
 );
 

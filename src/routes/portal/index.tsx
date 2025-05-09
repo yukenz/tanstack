@@ -1,8 +1,9 @@
 import {createFileRoute, useRouter} from '@tanstack/react-router'
 import cn from 'classnames'
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import Card from "@/component/Card";
 import Counter from "@/component/Counter";
+import {getEnviVar} from "@/serverFn/environment";
 
 // @ts-ignore
 export const Route = createFileRoute('/portal/')({
@@ -16,18 +17,25 @@ export const Route = createFileRoute('/portal/')({
 
 function Component() {
 
+    const [appId, setAppId] = useState<string>()
+    const [apiKey, setApiKey] = useState<string>()
+
     useEffect(() => {
         console.log('Component mounted.')
+
+        getEnviVar("APPID").then(value => setAppId(value))
+        getEnviVar("APIKEY").then(value => setApiKey(value))
+
     }, [])
 
-    // const router = useRouter()
-    // const state = Route.useLoaderData()
 
     return (
         <>
             <h1 className={cn("underline")}>Hello I'm portal</h1>
+            <p>{appId}</p>
+            <p>{apiKey}</p>
             <Card title="Hello World"/>
-            <Counter>Hello</Counter>
+            <Counter>X</Counter>
         </>
     )
 }
