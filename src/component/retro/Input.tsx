@@ -1,8 +1,6 @@
 "use client"
 
 import type React from "react"
-
-import {useState} from "react"
 import cn from "classnames";
 
 interface RetroInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -33,7 +31,7 @@ export function RetroTextArea({className, label, id, placeholder, ...props}: Ret
                     className,
                 )}
                 {...props}
-            ></input>
+            />
         </div>
     )
 }
