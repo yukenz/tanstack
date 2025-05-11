@@ -17,7 +17,8 @@ import {store} from "@/state/store";
 
 export const Route = createRootRoute({
     head: () => globalHeader(globalCss),
-    component: () => <App/>
+    component: () => <App/>,
+    notFoundComponent: () => <p>Not Found</p>,
 })
 
 function App() {
