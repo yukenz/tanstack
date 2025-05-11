@@ -14,6 +14,7 @@ import globalCss from '@/styles/global.css?url'
 import {TanStackRouterDevtoolsInProd} from "@tanstack/react-router-devtools";
 import globalHeader from "@/definition/globalHeader";
 import {store} from "@/state/store";
+import {RetroNavbar} from "@/component/RetroNavbar";
 
 export const Route = createRootRoute({
     head: () => globalHeader(globalCss),
@@ -25,6 +26,7 @@ function App() {
     return (
         <Provider store={store}>
             <RootDocument>
+                <RetroNavbar/>
                 <Outlet/>
                 <TanStackRouterDevtoolsInProd/>
             </RootDocument>
