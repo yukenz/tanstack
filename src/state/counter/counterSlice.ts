@@ -3,7 +3,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "@/state/store";
 import {CounterState, initialState} from "./counterState";
 import {WritableDraft} from "immer";
-import {getJwtToken, JwtResponse} from "@/utils/apigateway";
+import {getJwtToken, JwtResponse} from "@/clientFn/apigateway";
 import {getEnviVar} from "@/serverFn/environment";
 
 
