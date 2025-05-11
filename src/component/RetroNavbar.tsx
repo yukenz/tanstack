@@ -1,14 +1,9 @@
-"use client"
-
-import {useEffect, useRef, useState} from "react"
+import {useState} from "react"
 import {Menu, X} from "lucide-react"
 
 import cn from "classnames"
 import {Link} from "@tanstack/react-router";
-// import { Button } from "@/components/ui/button"
-
 import {Route as CommonCryptoRoute} from '@/routes/common-crypto/route'
-import {createRoot} from "react-dom/client";
 
 
 export function RetroNavbar() {
@@ -22,7 +17,6 @@ export function RetroNavbar() {
         {to: "/contact", label: "Contact"},
         {to: CommonCryptoRoute.to, label: "Crypto"},
     ]
-
 
     // State
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
