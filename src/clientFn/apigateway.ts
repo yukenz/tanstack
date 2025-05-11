@@ -5,13 +5,13 @@ export interface JwtResponse {
     expiresIn?: number,
     tokenType?: string,
     accessToken?: string,
-    Exception? : string
+    Exception?: string
 }
 
 export async function getJwtToken(
     apiKey: string,
     appId?: string,
-):Promise<JwtResponse> {
+): Promise<JwtResponse> {
 
     const JWT_URL = HOST + '/gateway/getJsonWebToken/1.0/getJsonWebToken'
     const getJwtRequest = fetch(JWT_URL, {
@@ -30,9 +30,9 @@ export async function getJwtToken(
         )
     });
 
-
-    return await getJwtRequest
+    const response = await getJwtRequest
         .then(value => value.json() as unknown as JwtResponse)
         .catch(reason => ({Exception: reason}));
 
+    return response;
 }
