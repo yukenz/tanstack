@@ -16,3 +16,8 @@ Add type module
   ...
 }
 ```
+
+# Jest Config
+```shell
+yarn ts-jest config:init
+```
