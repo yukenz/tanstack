@@ -1,26 +1,23 @@
 import {createFileRoute} from '@tanstack/react-router'
-import {doRsaSignature} from "@/serverFn/cryptography";
-import cn from "classnames";
-import Button from "@/component/retro/Button";
-import TextArea from "@/component/retro/TextArea";
-import Input from "@/component/retro/Input";
-import Radio from "@/component/retro/Radio";
 import {FormEventHandler, useState} from "react";
+import {doRsaSignature} from "@/serverFn/cryptography";
+import TextArea from "@/component/retro/TextArea";
+import Radio from "@/component/retro/Radio";
+import Button from "@/component/retro/Button";
+import Input from "@/component/retro/Input";
+import cn from "classnames";
 import toast from "react-hot-toast";
+import {useCommonCryptoSelector, setRsaSignature, setRsaSignatureError} from "@/state/common-crypto/commonCryptoSlice";
+import {useStoreDispatch} from "@/state/store";
 
-
-export const Route = createFileRoute('/common-crypto/')({
+export const Route = createFileRoute('/common-crypto/rsa-signature')({
     component: RouteComponent,
 })
 
 function RouteComponent() {
 
-    const [result, setResult] = useState<string | undefined>()
-    const [resultFieldColor, setResultFieldColor] = useState<
-        'text-black' | 'text-green-500' | 'text-red-500'
-    >('text-black')
-    const [resultFieldDisable, setResultFieldDisable] = useState(true)
-
+    const commonCryptoState = useCommonCryptoSelector();
+    const dispatch = useStoreDispatch();
 
     const onSubmitForm: FormEventHandler<HTMLFormElement> = async (event) => {
         event.preventDefault()
@@ -32,13 +29,16 @@ function RouteComponent() {
 
         try {
             const signature = await doRsaSignature({privateKey, message, algorithm});
-            setResult(signature);
-            setResultFieldDisable(false)
-            setResultFieldColor('text-green-500')
+            dispatch(setRsaSignature({
+                privateKey: privateKey,
+                messageSignature: message,
+                hashAlgorithm: algorithm,
+                resultSignature: signature,
+                resultFieldDisable: false,
+                resultFieldColor: 'text-green-500'
+            }))
         } catch (e) {
-            setResult((e as Error).message)
-            setResultFieldDisable(true)
-            setResultFieldColor('text-red-500')
+            dispatch(setRsaSignatureError((e as Error).message))
         }
     };
 
@@ -89,16 +89,16 @@ function RouteComponent() {
 
         {/* Result Field */}
         <Input
-            disabled={resultFieldDisable}
+            disabled={commonCryptoState.rsaSignature.resultFieldDisable}
             defaultValue="Signature Result Here"
-            value={result}
+            value={commonCryptoState.rsaSignature?.resultSignature}
             className={cn('text-center',
-                resultFieldColor
+                commonCryptoState.rsaSignature.resultFieldColor
             )}
             onClick={event => {
                 const target = event.currentTarget;
                 navigator.clipboard.writeText(target.value)
-                    .then(() => toast("Signature copied to clipboard", {duration: 1000}))
+                    .then(value => toast("Signature copied to clipboard", {duration: 1000}))
             }}
         />
     </>

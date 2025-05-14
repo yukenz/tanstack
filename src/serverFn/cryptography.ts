@@ -1,17 +1,18 @@
 import {createServerFn} from "@tanstack/react-start";
 import {KJUR, KEYUTIL, hextob64} from 'jsrsasign';
 
+// IDoRsaSignature
 
-interface IDoCrypto {
+interface IDoRsaSignature {
     privateKey: string;
     message: string,
     algorithm: 'SHA256withRSA' | 'SHA512withRSA' | string,
 }
 
-const doCryptoFn = createServerFn({
+const doRsaSignatureFn = createServerFn({
     method: 'POST',
 })
-    .validator((d: IDoCrypto) => d)
+    .validator((d: IDoRsaSignature) => d)
     .handler(({data}) => {
 
         console.log(data);
@@ -31,8 +32,34 @@ const doCryptoFn = createServerFn({
 
     })
 
-async function doCrypto(props: IDoCrypto) {
-    return await doCryptoFn({data: props})
+async function doRsaSignature(props: IDoRsaSignature) {
+    return await doRsaSignatureFn({data: props})
 }
 
-export {doCrypto}
+
+// DoGenerateRsa
+interface IDoGenerateRsa {
+    keyLength: 1024 | 2048 | 4096 | number,
+}
+
+const doGenerateRsaFn = createServerFn({
+    method: 'POST',
+})
+    .validator((d: IDoGenerateRsa) => d)
+    .handler(({data}) => {
+
+        console.log(data);
+
+        const keypair = KEYUTIL.generateKeypair("RSA", data.keyLength);
+        const privPem = KEYUTIL.getPEM(keypair.prvKeyObj, "PKCS8PRV");
+        const pubPem = KEYUTIL.getPEM(keypair.pubKeyObj);
+
+        return {privPem, pubPem};
+
+    })
+
+async function doGenerateRsa(props: IDoGenerateRsa) {
+    return await doGenerateRsaFn({data: props})
+}
+
+export {doRsaSignature,doGenerateRsa}

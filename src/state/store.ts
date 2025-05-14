@@ -1,10 +1,12 @@
 import {configureStore} from "@reduxjs/toolkit";
 import counterReducer, {counter} from './counter/counterSlice'
+import commonCryptoReducer, {commonCrypto} from './common-crypto/commonCryptoSlice'
 import {useDispatch} from "react-redux";
 
 export const store = configureStore({
     reducer: {
-        [counter]: counterReducer
+        [commonCrypto]: commonCryptoReducer,
+        [counter]: counterReducer,
     }
 });
 
