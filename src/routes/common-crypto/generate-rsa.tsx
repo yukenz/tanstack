@@ -1,11 +1,17 @@
 import {createFileRoute} from '@tanstack/react-router'
 import TextArea from "@/component/retro/TextArea";
-import {FormEventHandler, useState} from "react";
+import {FormEventHandler, useEffect, useState} from "react";
 import Radio from "@/component/retro/Radio";
 import Button from "@/component/retro/Button";
 import {doGenerateRsa, doRsaSignature} from "@/serverFn/cryptography";
-import {setGenerateRsaKey, useCommonCryptoSelector} from "@/state/common-crypto/commonCryptoSlice";
+import {
+    setGenerateRsaKey,
+    useCommonCryptoSelector,
+    saveGenerateRsaState,
+    loadGenerateRsaState
+} from "@/state/common-crypto/commonCryptoSlice";
 import {useStoreDispatch} from "@/state/store";
+import {CommonCryptoState} from "@/state/common-crypto/commonCryptoState";
 
 export const Route = createFileRoute('/common-crypto/generate-rsa')({
     component: RouteComponent,
@@ -22,7 +28,6 @@ function RouteComponent() {
         event.preventDefault()
         const formData = new FormData(event.currentTarget);
 
-
         try {
             const keyLength = parseInt(formData.get('LGT') as string);
             const rsaKeyPair = await doGenerateRsa({keyLength})
@@ -32,10 +37,15 @@ function RouteComponent() {
                 publicKey: rsaKeyPair.pubPem,
                 resultFieldDisable: false
             }));
+
+            dispatch(saveGenerateRsaState())
         } catch (e) {
         }
     };
 
+    useEffect(() => {
+        dispatch(loadGenerateRsaState())
+    },[]);
 
     return <div className="flex flex-col h-full p-3.5 gap-1">
         <h1 className="mb-6 text-4xl font-black text-black">RSA Key Generator</h1>

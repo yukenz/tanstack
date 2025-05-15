@@ -1,5 +1,5 @@
 import {createFileRoute} from '@tanstack/react-router'
-import {FormEventHandler, useState} from "react";
+import {FormEventHandler, useEffect, useState} from "react";
 import {doRsaSignature} from "@/serverFn/cryptography";
 import TextArea from "@/component/retro/TextArea";
 import Radio from "@/component/retro/Radio";
@@ -7,7 +7,12 @@ import Button from "@/component/retro/Button";
 import Input from "@/component/retro/Input";
 import cn from "classnames";
 import toast from "react-hot-toast";
-import {useCommonCryptoSelector, setRsaSignature, setRsaSignatureError} from "@/state/common-crypto/commonCryptoSlice";
+import {
+    useCommonCryptoSelector,
+    setRsaSignature,
+    setRsaSignatureError,
+    saveRsaSignatureState, loadRsaSignatureState
+} from "@/state/common-crypto/commonCryptoSlice";
 import {useStoreDispatch} from "@/state/store";
 
 export const Route = createFileRoute('/common-crypto/rsa-signature')({
@@ -32,15 +37,19 @@ function RouteComponent() {
             dispatch(setRsaSignature({
                 privateKey: privateKey,
                 messageSignature: message,
-                hashAlgorithm: algorithm,
                 resultSignature: signature,
                 resultFieldDisable: false,
                 resultFieldColor: 'text-green-500'
             }))
+            dispatch(saveRsaSignatureState())
         } catch (e) {
             dispatch(setRsaSignatureError((e as Error).message))
         }
     };
+
+    useEffect(() => {
+        dispatch(loadRsaSignatureState())
+    }, []);
 
 
     return <>
@@ -60,6 +69,7 @@ function RouteComponent() {
                 placeholder="Private Key"
                 className='h-[200px]'
                 name='PK'
+                defaultValue={commonCryptoState.rsaSignature?.privateKey}
             />
             {/* Message Field */}
             <TextArea
@@ -67,6 +77,7 @@ function RouteComponent() {
                 placeholder="Signature Message"
                 className='h-[200px] mb-3.5'
                 name='MSG'
+                defaultValue={commonCryptoState.rsaSignature?.messageSignature}
             />
             {/* Algorithm Field */}
             <Radio

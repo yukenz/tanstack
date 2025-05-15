@@ -7,7 +7,28 @@ import {WritableDraft} from "immer";
 
 const name = 'common-crypto';
 
+
 const reducers = {
+    saveRsaSignatureState: (state: WritableDraft<CommonCryptoState>) => {
+        const item = JSON.stringify(state.rsaSignature);
+        localStorage.setItem(name + '-rsaSignature', item);
+    },
+    loadRsaSignatureState: (state: WritableDraft<CommonCryptoState>) => {
+        const item = localStorage.getItem(name + '-rsaSignature');
+        if (typeof item == 'string') {
+            state.rsaSignature = JSON.parse(item);
+        }
+    },
+    saveGenerateRsaState: (state: WritableDraft<CommonCryptoState>) => {
+        const item = JSON.stringify(state.generateRsa);
+        localStorage.setItem(name + '-generateRsa', item);
+    },
+    loadGenerateRsaState: (state: WritableDraft<CommonCryptoState>) => {
+        const item = localStorage.getItem(name + '-generateRsa');
+        if (typeof item == 'string') {
+            state.generateRsa = JSON.parse(item);
+        }
+    },
     setGenerateRsaKey: (state: WritableDraft<CommonCryptoState>, {
         type,
         payload
@@ -30,13 +51,17 @@ const reducers = {
 const commonCryptoSlice = createSlice({
     name,
     initialState,
-    reducers
+    reducers,
 });
 
 export const {
     setGenerateRsaKey,
     setRsaSignature,
-    setRsaSignatureError
+    setRsaSignatureError,
+    saveRsaSignatureState,
+    loadRsaSignatureState,
+    saveGenerateRsaState,
+    loadGenerateRsaState
 } = commonCryptoSlice.actions;
 
 export const useCommonCryptoSelector =

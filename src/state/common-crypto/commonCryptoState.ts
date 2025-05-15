@@ -1,4 +1,4 @@
-import {undefined} from "zod";
+import {createServerFn} from "@tanstack/react-start";
 
 export interface CommonCryptoState {
     generateRsa: {
@@ -9,19 +9,60 @@ export interface CommonCryptoState {
     rsaSignature: {
         privateKey?: string;
         messageSignature?: string;
-        hashAlgorithm?: string;
         resultSignature?: string;
         resultFieldDisable: boolean;
         resultFieldColor: 'text-black' | 'text-green-500' | 'text-red-500'
     }
 }
 
-export const initialState: CommonCryptoState = {
-    generateRsa: {
-        resultFieldDisable: true
-    },
-    rsaSignature: {
-        resultFieldDisable: true,
-        resultFieldColor: "text-black"
-    }
+
+//
+// export const initialState: CommonCryptoState = {
+//     generateRsa: {
+//         resultFieldDisable: true
+//     },
+//     rsaSignature: {
+//         resultFieldDisable: true,
+//         resultFieldColor: "text-black"
+//     }
+// }
+
+// export const initialState = createServerFn({type: 'static'}).handler(() => {
+//     const item = localStorage.getItem('common-crypto');
+//     if (typeof item == "string") {
+//         console.log('loaded state', item);
+//         return JSON.stringify(item) as unknown as CommonCryptoState;
+//     }
+//
+//     return {
+//         generateRsa: {
+//             resultFieldDisable: true
+//         },
+//         rsaSignature: {
+//             resultFieldDisable: true,
+//             resultFieldColor:
+//                 "text-black"
+//         }
+//     } as CommonCryptoState
+// })
+
+
+export const initialState = () => {
+
+    // const item = localStorage.getItem('common-crypto');
+    // if (typeof item == "string") {
+    //     console.log('loaded state', item);
+    //     return JSON.stringify(item) as unknown as CommonCryptoState;
+    // }
+
+    return {
+        generateRsa: {
+            resultFieldDisable: true
+        },
+        rsaSignature: {
+            resultFieldDisable: true,
+            resultFieldColor:
+                "text-black"
+        }
+    } as CommonCryptoState
 }
