@@ -4,6 +4,7 @@ import {Menu, X} from "lucide-react"
 import cn from "classnames"
 import {Link} from "@tanstack/react-router";
 import {Route as CommonCryptoRoute} from '@/routes/common-crypto/route'
+import {Route as ElasticToolsRoute} from '@/routes/elastic-tools/route'
 
 
 export function RetroNavbar() {
@@ -14,7 +15,7 @@ export function RetroNavbar() {
         {to: "/about", label: "About"},
         {to: "/products", label: "Products"},
         {to: "/blog", label: "Blog"},
-        {to: "/contact", label: "Contact"},
+        {to: ElasticToolsRoute.to, label: "Elastic"},
         {to: CommonCryptoRoute.to, label: "Crypto"},
     ]
 
