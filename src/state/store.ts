@@ -1,12 +1,14 @@
 import {configureStore} from "@reduxjs/toolkit";
 import counterReducer, {counter} from './counter/counterSlice'
 import commonCryptoReducer, {commonCrypto} from './common-crypto/commonCryptoSlice'
+import elasticReducer, {elastic} from './elastic/elasticSlice'
 import {useDispatch} from "react-redux";
 
 export const store = configureStore({
     reducer: {
         [commonCrypto]: commonCryptoReducer,
         [counter]: counterReducer,
+        [elastic]: elasticReducer,
     }
 });
 
